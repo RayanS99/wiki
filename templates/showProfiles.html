@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>All Profiles</title> 
+{% endblock %}
+
+{% block body %}
+<br>
+<div>
+    <h1 style="display:inline">All Profiles</h1>
+    <a style="display:inline" class="btn btn-success float-right" href="/showprofiles" >New Profile</a>
+</div>
+    <hr>
+    <hr>
+    {% for profile in profiles %}
+        <h2>{{ profile.name }} {{profile.surname}}</h2> 
+        <h3>{{ profile.content }}</h3>
+        <br>
+        <a class="btn btn-primary" href='/profile/delete/{{profile.id}}'>Delete</a>
+        <br>
+        <hr>
+    {% endfor %}
+
+{% endblock %}
