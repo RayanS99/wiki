@@ -1,7 +1,10 @@
+{% block doc -%}
 <!DOCTYPE html>
 <html lang="en">
+{%- block html %}
 
 <head>
+    <title>{% block title %}Title{% endblock title %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,6 +14,8 @@
 </head>
 
 <body>
+    {% block body %}
+    {% block navbar %}
     <nav class="navbar navbar-dark bg-primary">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01"
             aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,13 +29,18 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/showprofiles">All profiles</a>
+                    <a class="nav-link" href="/addprofile">Create your profile</a>
                 </li>
             </ul>
         </div>
     </nav>
+    {%- endblock navbar %}
 
     <div class="container">
-        {% block body %} {% endblock %}
+    <!-- Content goes here: -->
+    {% block content -%}
+    {%- endblock content %}
+    
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -42,6 +52,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+{%- endblock body %}
 </body>
-
+{%- endblock html %}
 </html>
+{% endblock doc -%}

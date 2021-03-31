@@ -1,1 +1,26 @@
-<h1>This is addProfile</h1>
+{% extends "base.html" %}
+{% block title %}Add Profile{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/main.css">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container-form">
+    <form action="{{ url_for('profiles') }}" method="POST">
+    <div class="container-form-sub">
+        <h1>Create your profile!</h1>
+            <input type="text" class="form-control" placeholder="Name" name="name" required>
+            <input type="text" class="form-control" placeholder="Surname" name="surname" required>
+            <input type="date" class="form-control" placeholder="Date of Birth" name="date_of_birth" required>
+            <textarea type="text" class="form-control" placeholder="Tell us about yourself" name="content" rows="5"></textarea>
+
+        <input type="submit" class="btn btn-success" style="margin-left: 200px; margin-top: 7px;" value="Create">
+        </div>
+    </div>
+    </form>
+</div>
+
+{% endblock %}

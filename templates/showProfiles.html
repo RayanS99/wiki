@@ -1,22 +1,25 @@
 {% extends 'base.html' %}
 
+{% block title %}All Profiles{% endblock %}
+
 {% block head %}
-<title>All Profiles</title> 
+<link rel="stylesheet" href="/static/main.css">
 {% endblock %}
 
-{% block body %}
+{% block content %}
 <br>
-<div>
-    <h1 style="display:inline">All Profiles</h1>
-    <a style="display:inline" class="btn btn-success float-right" href="/showprofiles" >New Profile</a>
+<div class="show-all" style="margin-top: 20px;">
+    <h1 style="display:inline; color: darkslateblue;">All Profiles</h1>
+    <a style="display:inline" class="btn btn-success float-right" href="/addprofile" >New Profile</a>
 </div>
     <hr>
     <hr>
     {% for profile in profiles %}
-        <h2>{{ profile.name }} {{profile.surname}}</h2> 
-        <h3>{{ profile.content }}</h3>
-        <br>
-        <a class="btn btn-primary" href='/profile/delete/{{profile.id}}'>Delete</a>
+        <h4 style="color: #c5773b;">{{ profile.name }} {{profile.surname}}</h4> 
+        <h5>{{ profile.content }}</h5>
+        <h6>{{ profile.date_of_birth }}</h6>
+        
+        <a class="btn btn-primary" style="margin-top: 10px"; href='/profile/delete/{{profile.id}}'>Delete</a>
         <br>
         <hr>
     {% endfor %}

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from datetime import date, datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///profiles.db'
@@ -9,7 +10,7 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     surname = db.Column(db.String(100), nullable=False)
-    date_of_birth = db.Column(db.DateTime, nullable=True)
+    date_of_birth = db.Column(db.Date, nullable=True)
     content = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
@@ -23,9 +24,10 @@ def index():
 def profiles():
 
     if request.method == 'POST':
+        birthday = request.form['date_of_birth']
         profile_name = request.form['name']
         profile_surname = request.form['surname']
-        profile_date_of_birth = request.form['date_of_birth']
+        profile_date_of_birth = datetime.strptime(birthday, "%Y-%m-%d")
         profile_content = request.form['content']
         new_profile = Profile(name=profile_name, surname=profile_surname, date_of_birth=profile_date_of_birth, content=profile_content)
         db.session.add(new_profile)
