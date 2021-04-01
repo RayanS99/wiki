@@ -22,20 +22,7 @@ def index():
 
 @app.route('/showprofiles', methods=['GET', 'POST'])
 def profiles():
-
-    if request.method == 'POST':
-        birthday = request.form['date_of_birth']
-        profile_name = request.form['name']
-        profile_surname = request.form['surname']
-        profile_date_of_birth = datetime.strptime(birthday, "%Y-%m-%d")
-        profile_content = request.form['content']
-        new_profile = Profile(name=profile_name, surname=profile_surname, date_of_birth=profile_date_of_birth, content=profile_content)
-        db.session.add(new_profile)
-        db.session.commit()
-        return redirect('/showprofiles')
-    else:
-        all_profiles = Profile.query.all()
-        return render_template('showProfiles.html', profiles = all_profiles)
+    return render_template('showProfiles.html', profiles = Profile.query.all())
 
 @app.route('/profile/delete/<int:id>')
 def delete(id):
@@ -46,12 +33,21 @@ def delete(id):
 
 @app.route('/addprofile', methods=['GET', 'POST'])
 def new_url():
+    # if request.method == 'POST':
+    #     profile_name = request.form['name']
+    #     profile_surname = request.form['surname']
+    #     profile_date_of_birth = datetime.strptime(request.form['date_of_birth'], "%Y-%m-%d")
+    #     profile_content = request.form['content']
+    #     new_profile = Profile(name=profile_name, surname=profile_surname, date_of_birth=profile_date_of_birth, content=profile_content)
+    #     db.session.add(new_profile)
+    #     db.session.commit()
+    #     return redirect('/showprofiles')
+    # else:
+    #     return render_template('addProfile.html')
+
     if request.method == 'POST':
-        profile_name = request.form['name']
-        profile_surname = request.form['surname']
-        profile_date_of_birth = request.form['date_of_birth']
-        profile_content = request.form['content']
-        new_profile = Profile(name=profile_name, surname=profile_surname, date_of_birth=profile_date_of_birth, content=profile_content)
+        data = request.get_json()    
+        new_profile = Profile(name=data['name'], surname=data['surname'], date_of_birth=datetime.strptime(data['date_of_birth'], "%Y-%m-%d"), content=data['content'])
         db.session.add(new_profile)
         db.session.commit()
         return redirect('/showprofiles')

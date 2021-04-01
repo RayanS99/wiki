@@ -9,18 +9,83 @@
 
 
 <div class="container-form">
-    <form action="{{ url_for('profiles') }}" method="POST">
-    <div class="container-form-sub">
-        <h1>Create your profile!</h1>
-            <input type="text" class="form-control" placeholder="Name" name="name" required>
-            <input type="text" class="form-control" placeholder="Surname" name="surname" required>
-            <input type="date" class="form-control" placeholder="Date of Birth" name="date_of_birth" required>
-            <textarea type="text" class="form-control" placeholder="Tell us about yourself" name="content" rows="5"></textarea>
+    <form id="profile-form" action="/addprofile" method="POST">
+        <div class="container-form-sub">
+            <h1>Create your profile!</h1>
+            <input type="text" class="form-control" placeholder="Name"
+                name="name" required>
+            <input type="text" class="form-control" placeholder="Surname"
+                name="surname" required>
+            <input type="date" class="form-control" placeholder="Date of Birth"
+                name="date_of_birth" required>
+            <textarea type="text" class="form-control"
+                placeholder="Tell us about yourself" name="content"
+                rows="5"></textarea>
 
-        <input type="submit" class="btn btn-success" style="margin-left: 200px; margin-top: 7px;" value="Create">
+            <input type="submit" class="btn btn-success"
+                style="margin-left: 200px; margin-top: 7px;" value="Create">
         </div>
-    </div>
-    </form>
 </div>
+</form>
+</div>
+
+<script>
+
+    async function postFormDataAsJson({ url, formData }) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        console.log("plainFormData");
+        console.log(plainFormData);
+        console.log(typeof plainFormData);
+        const formDataJsonString = JSON.stringify(plainFormData);
+        console.log(formDataJsonString);
+        console.log(typeof formDataJsonString);
+
+
+        const fetchOptions = {
+            method: "POST",
+            redirect: "follow",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(plainFormData),
+        };
+
+        const response = await fetch(url, fetchOptions);
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(errorMessage);
+            console.log('response not ok');
+        }
+
+        if (response.redirected) {
+            window.location.href = "/showprofiles";
+        }
+    }
+
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+
+        const form = event.currentTarget;
+        const url = form.action;
+        console.log(url);
+
+        try {
+            console.log("inside try");
+            const formData = new FormData(form);
+
+            const responseData = await postFormDataAsJson({ url, formData });
+            console.log("Response data in try:");
+            console.log(responseData);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const profileForm = document.getElementById("profile-form");
+    profileForm.addEventListener("submit", handleFormSubmit);
+</script>
 
 {% endblock %}
