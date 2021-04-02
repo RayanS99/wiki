@@ -1,12 +1,20 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date, datetime
+from dataclasses import dataclass
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///profiles.db'
 db = SQLAlchemy(app)
 
+@dataclass
 class Profile(db.Model):
+    id: int
+    name: str
+    surname: str
+    date_of_birth: date
+    content: str
+    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     surname = db.Column(db.String(100), nullable=False)
@@ -24,12 +32,24 @@ def index():
 def profiles():
     return render_template('showProfiles.html', profiles = Profile.query.all())
 
-@app.route('/profile/delete/<int:id>')
-def delete(id):
+@app.route('/api/get-them-all', methods=['GET', 'POST'])
+def get_profiles():
+    all_profiles = Profile.query.all()
+    return jsonify(all_profiles)
+
+@app.route('/api/delete/<id>', methods=['DELETE'])
+def delete_this_guy(id):
     profile = Profile.query.get_or_404(id)
     db.session.delete(profile)
     db.session.commit()
-    return redirect('/showprofiles')
+    return jsonify({'message': 'successfully deleted'})
+
+#@app.route('/profile/delete/<int:id>')
+#def delete(id):
+#    profile = Profile.query.get_or_404(id)
+#    db.session.delete(profile)
+#    db.session.commit()
+#    return redirect('/showprofiles')
 
 @app.route('/addprofile', methods=['GET', 'POST'])
 def new_url():
