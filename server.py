@@ -44,27 +44,9 @@ def delete_this_guy(id):
     db.session.commit()
     return jsonify({'message': 'successfully deleted'})
 
-#@app.route('/profile/delete/<int:id>')
-#def delete(id):
-#    profile = Profile.query.get_or_404(id)
-#    db.session.delete(profile)
-#    db.session.commit()
-#    return redirect('/showprofiles')
 
 @app.route('/addprofile', methods=['GET', 'POST'])
 def new_url():
-    # if request.method == 'POST':
-    #     profile_name = request.form['name']
-    #     profile_surname = request.form['surname']
-    #     profile_date_of_birth = datetime.strptime(request.form['date_of_birth'], "%Y-%m-%d")
-    #     profile_content = request.form['content']
-    #     new_profile = Profile(name=profile_name, surname=profile_surname, date_of_birth=profile_date_of_birth, content=profile_content)
-    #     db.session.add(new_profile)
-    #     db.session.commit()
-    #     return redirect('/showprofiles')
-    # else:
-    #     return render_template('addProfile.html')
-
     if request.method == 'POST':
         data = request.get_json()    
         new_profile = Profile(name=data['name'], surname=data['surname'], date_of_birth=datetime.strptime(data['date_of_birth'], "%Y-%m-%d"), content=data['content'])
