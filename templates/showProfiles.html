@@ -14,14 +14,11 @@
 </div>
     <hr>
     <hr>
-    {% for profile in profiles %}
-        <h4 style="color: #c5773b;">{{ profile.name }} {{profile.surname}}</h4> 
-        <h5>{{ profile.content }}</h5>
-        <h6>{{ profile.date_of_birth }}</h6>
-        
-        <a class="btn btn-primary" style="margin-top: 10px"; href='/profile/delete/{{profile.id}}'>Delete</a>
-        <br>
-        <hr>
-    {% endfor %}
+    
+    <div id='profile_section'>
+
+    </div>
+
+    <script src="{{url_for('static', filename='app.js')}}"></script>
 
 {% endblock %}
